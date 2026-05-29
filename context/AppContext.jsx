@@ -70,7 +70,20 @@ export const AppContextProvider = (props) => {
       cartData[itemId] = 1;
     }
     setCartItems(cartData);
-    toast.success("Item added to cart");
+    
+    if(user){
+      try{
+        const token = await getToken();
+        await axios.post("/api/cart/update", {cartData}, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        toast.success("Item added to cart");
+      }
+      catch(err){
+        console.error("Error updating cart:", err);
+        toast.error("An error occurred while updating the cart");
+      }
+    }
   };
 
   const updateCartQuantity = async (itemId, quantity) => {
@@ -81,6 +94,19 @@ export const AppContextProvider = (props) => {
       cartData[itemId] = quantity;
     }
     setCartItems(cartData);
+    if(user){
+      try{
+        const token = await getToken();
+        await axios.post("/api/cart/update", {cartData}, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        toast.success("Cart updated successfully");
+      }
+      catch(err){
+        console.error("Error updating cart:", err);
+        toast.error("An error occurred while updating the cart");
+      }
+    }
   };
 
   const getCartCount = () => {

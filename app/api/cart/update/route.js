@@ -1,7 +1,8 @@
 import { getAuth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import connectToDatabase from "@/config/db";
-import User from "@/models/User";
+import User from "@/models/user"
+
 
 export async function POST(request){
     try{
@@ -10,9 +11,8 @@ export async function POST(request){
         await connectToDatabase();
         const user = await User.findById(userId);
         user.cartItems = cartData;
-        user.save()
-        NextResponse.json({ success: true, message: "Cart updated successfully" }, { status: 200 });
-
+        await user.save();
+        return NextResponse.json({ success: true, message: "Cart updated successfully" }, { status: 200 });
     }catch(err){
         return NextResponse.json({ success: false, message: "An error occurred while updating cart" }, { status: 500 });
     }
