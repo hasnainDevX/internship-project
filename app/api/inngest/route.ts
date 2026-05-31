@@ -1,5 +1,5 @@
 import { serve } from "inngest/next";
-import { inngest, syncUserCreation, syncUserDeletion, syncUserUpdate } from "../../../config/inngest";
+import { createUserOrder, inngest, syncUserCreation, syncUserDeletion, syncUserUpdate, } from "../../../config/inngest";
 
 export const dynamic = "force-dynamic";
 
@@ -8,6 +8,7 @@ export const { GET, POST, PUT } = serve({
   functions: [
     syncUserCreation,
     syncUserUpdate,
-    syncUserDeletion
+    syncUserDeletion,
+    createUserOrder,
   ],
 });
