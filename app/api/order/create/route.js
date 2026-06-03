@@ -1,5 +1,5 @@
 import { getAuth } from "@clerk/nextjs/server";
-import { Inngest } from "inngest";
+import { inngest } from "../../../../config/inngest.js";
 import { NextResponse } from "next/server";
 import Product from "../../../../models/Product.js";
 import User from "../../../../models/user.js";
@@ -18,22 +18,22 @@ export async function POST(request){
         //calculate amount
         const amount = await items.reduce(async (accessedDynamicAmount, item) => {
             const product = await Product.findById(item.product);
-            return accessedDynamicAmount + product.offerPrice * item.quantity;
+            return await accessedDynamicAmount + product.offerPrice * item.quantity;
         }, 0);
 
-        await Inngest.send({
+        await inngest.send({
             name: 'order/created',
             data: {
                 userId,
                 items,
                 amount: amount + Math.floor(amount * 0.13), // adding 13% tax
                 address,
-                date: date.now(),
+                date: new Date(),
             }
         });
 
         // clear user cart
-        const user = await UserfindById(userId);
+        const user = await User.findById(userId);
         user.cartItems = [];
         await user.save();
 

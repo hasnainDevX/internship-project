@@ -45,7 +45,43 @@ const OrderSummary = () => {
     setIsDropdownOpen(false);
   };
 
-  const createOrder = async () => {};
+  const createOrder = async () => {
+    try{
+      if(!selectedAddress){
+        return toast.error("Please select an address before placing the order.");
+      }
+      let cartItemsArray = Object.keys(cartItems).map((key) => ({
+        product: key,
+        quantity: cartItems[key],
+      })); 
+      cartItemsArray = cartItemsArray.filter((item) => item.quantity > 0);
+
+      if(cartItemsArray.length === 0){
+        return toast.error("Cart is empty")
+      }
+
+      const token = await getToken()
+      const { data} = await axios.post("/api/order/create", {
+        address: selectedAddress._id,
+        items: cartItemsArray,
+      }, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if(data.success){
+        toast.success("Order created successfully!");
+        setCartItems({});
+        router.push("/order-placed");
+      }
+      else{
+        toast.error("Failed to create order. Please try again.");
+      }
+
+    }catch(err){
+      console.log(err);
+      toast.error("Failed to create order. Please try again.");
+    }
+  };
 
   useEffect(() => {
     if (user) {
