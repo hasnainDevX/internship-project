@@ -3,7 +3,6 @@ import connectDB from "./db.js";
 import User from "../models/user.js";
 import connectToDatabase from "./db.js";
 import Order from "../models/Order.js";
-// import Product from "../mo";
 
 export const inngest = new Inngest({ id: "ecommerce-app" });
 
