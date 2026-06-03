@@ -1,9 +1,9 @@
 import { getAuth } from "@clerk/nextjs/server";
 import { Inngest } from "inngest";
 import { NextResponse } from "next/server";
-import Product from "../../../models/product.js";
-import User from "../../../models/user.js";
-import { createUserOrder } from "../../../config/inngest.js";
+import Product from "../../../../models/product.js";
+import User from "../../../../models/user.js";
+import { createUserOrder } from "../../../../config/inngest.js";
 
 
 export async function POST(request){
