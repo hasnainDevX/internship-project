@@ -9,7 +9,7 @@ const orderSchema = new mongoose.Schema({
     items: [{
         product: {
             type: String,
-            ref: "product",
+            ref: "Product",
             required: true
         },
         quantity: {
